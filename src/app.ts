@@ -1,4 +1,3 @@
-// app.ts
 import express from "express";
 import { InMemoryPlantRepository } from "./adapters/in-memory-plant-repository";
 import { PlantController } from "./adapters/plant.controller";
@@ -15,8 +14,8 @@ const plantController = new PlantController(plantService);
 app.use(express.json());
 app.use("/api", plantRouter);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-export default app;
+export { app, server };

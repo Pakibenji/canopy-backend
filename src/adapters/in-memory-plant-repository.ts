@@ -3,10 +3,7 @@ import { Plant } from "../domain/entities/plant.entity";
 import IPlantRepository from "../domain/ports/plant-repository.interface";
 
 export class InMemoryPlantRepository implements IPlantRepository {
-  private plants: Plant[] = [
-    new Plant("1", "Rose", "user123", "Alice", new Date()),
-    new Plant("2", "Tulip", "user456", "Bob", new Date()),
-  ];
+  private plants: Plant[] = [];
 
   async getAllPlants(): Promise<Plant[]> {
     return this.plants;
@@ -18,5 +15,11 @@ export class InMemoryPlantRepository implements IPlantRepository {
 
   async addPlant(plant: Plant): Promise<void> {
     this.plants.push(plant);
+  }
+  async deletePlant(id: string): Promise<void> {
+    const plantIndex = this.plants.findIndex((plant) => plant.id === id);
+    if (plantIndex !== -1) {
+      this.plants.splice(plantIndex, 1);
+    }
   }
 }

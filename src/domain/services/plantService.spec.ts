@@ -45,15 +45,6 @@ describe("PlantService", () => {
     expect(plantById).toEqual(plant);
   });
 
-  it("should throw an error if no plant is found", async () => {
-    const inMemoryPlantRepository = new InMemoryPlantRepository();
-    const plantService = new PlantService(inMemoryPlantRepository);
-
-    await expect(plantService.getPlantById("1")).rejects.toThrow(
-      NoPlantFoundError
-    );
-  });
-
   it("should add a plant", async () => {
     const inMemoryPlantRepository = new InMemoryPlantRepository();
     const plantService = new PlantService(inMemoryPlantRepository);
@@ -63,5 +54,18 @@ describe("PlantService", () => {
 
     const plantById = await plantService.getPlantById("1");
     expect(plantById).toEqual(plant);
+  });
+  it("should delete a plant by id", async () => {
+    const inMemoryPlantRepository = new InMemoryPlantRepository();
+    const plantService = new PlantService(inMemoryPlantRepository);
+
+    const plant = new Plant("1", "Rose", "user123", "Alice", new Date());
+    await inMemoryPlantRepository.addPlant(plant);
+
+    await plantService.deletePlant("1");
+
+    await expect(plantService.getPlantById("1")).rejects.toThrow(
+      NoPlantFoundError
+    );
   });
 });

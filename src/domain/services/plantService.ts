@@ -17,7 +17,7 @@ export class PlantService {
     }
   }
 
-  async getPlantById(id: string): Promise<Plant | null> {
+  async getPlantById(id: string): Promise<Plant> {
     try {
       const plant = await this.plantRepository.getPlantById(id);
       if (!plant) {
@@ -37,6 +37,18 @@ export class PlantService {
       }
     } catch (error) {
       throw new PlantNotAddedError();
+    }
+  }
+
+  async deletePlant(id: string): Promise<void> {
+    try {
+      const plant = await this.plantRepository.getPlantById(id);
+      if (!plant) {
+        throw new NoPlantFoundError();
+      }
+      await this.plantRepository.deletePlant(id);
+    } catch (error) {
+      throw error;
     }
   }
 }
