@@ -1,6 +1,5 @@
 import request from "supertest";
 import { app, server } from "../app";
-import { NoPlantFoundError } from "../domain/services/plantService";
 
 describe("E2E tests plantController", () => {
   it("should add a plant", async () => {
@@ -9,7 +8,6 @@ describe("E2E tests plantController", () => {
       plantName: "Rose",
       ownerId: "user123",
       owner: "Alice",
-      createdAt: new Date(),
     });
 
     const plantById = await request(app).get("/api/plants/1");
@@ -36,7 +34,6 @@ describe("E2E tests plantController", () => {
       plantName: "Lily",
       ownerId: "user789",
       owner: "Eve",
-      createdAt: new Date(),
     });
 
     const deleteResponse = await request(app).delete("/api/plants/4");

@@ -6,5 +6,3 @@ export interface IPlantRepository {
   getPlantById(id: string): Promise<Plant | null>;
   addPlant(plant: Plant): Promise<void>;
 }
-
-export default IPlantRepository;

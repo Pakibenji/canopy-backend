@@ -1,9 +1,13 @@
 // plantService.ts
-import IPlantRepository from "../ports/plant-repository.interface";
+import { IPlantRepository } from "../ports/plant-repository.interface";
 import { Plant } from "../entities/plant.entity";
+import { IDateProvider } from "../ports/date-provider.interface";
 
 export class PlantService {
-  constructor(private plantRepository: IPlantRepository) {}
+  constructor(
+    private readonly plantRepository: IPlantRepository,
+    private readonly dateProvider: IDateProvider
+  ) {}
 
   async getAllPlants(): Promise<Plant[]> {
     try {
@@ -31,7 +35,10 @@ export class PlantService {
 
   async addPlant(plant: Plant): Promise<void> {
     try {
-      await this.plantRepository.addPlant(plant);
+      await this.plantRepository.addPlant({
+        ...plant,
+        createdAt: this.dateProvider.now(),
+      });
       if (!plant) {
         throw new PlantNotAddedError();
       }

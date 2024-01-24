@@ -1,6 +1,6 @@
 // in-memory-plant-repository.ts
 import { Plant } from "../domain/entities/plant.entity";
-import IPlantRepository from "../domain/ports/plant-repository.interface";
+import { IPlantRepository } from "../domain/ports/plant-repository.interface";
 
 export class InMemoryPlantRepository implements IPlantRepository {
   private plants: Plant[] = [];

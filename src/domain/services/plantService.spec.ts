@@ -1,4 +1,3 @@
-// plantService.test.ts
 import { InMemoryPlantRepository } from "../../adapters/in-memory-plant-repository";
 import {
   PlantService,
@@ -6,18 +5,34 @@ import {
   NoPlantFoundError,
 } from "./plantService";
 import { Plant } from "../entities/plant.entity";
+import { FakeDateProvider } from "../../adapters/fake-date-provider";
 
 describe("PlantService", () => {
-  it("should get all plants", async () => {
-    const inMemoryPlantRepository = new InMemoryPlantRepository();
-    const plantService = new PlantService(inMemoryPlantRepository);
+  let inMemoryPlantRepository: InMemoryPlantRepository;
+  let fakeDateProvider: FakeDateProvider;
+  let plantService: PlantService;
 
-    await inMemoryPlantRepository.addPlant(
-      new Plant("1", "Rose", "user123", "Alice", new Date())
-    );
-    await inMemoryPlantRepository.addPlant(
-      new Plant("2", "Tulip", "user456", "Bob", new Date())
-    );
+  beforeEach(() => {
+    inMemoryPlantRepository = new InMemoryPlantRepository();
+    fakeDateProvider = new FakeDateProvider(new Date("2021-01-01T00:00:00"));
+    plantService = new PlantService(inMemoryPlantRepository, fakeDateProvider);
+  });
+
+  const createPlant = (
+    id: string,
+    plantName: string,
+    ownerId: string,
+    owner: string
+  ): Plant => {
+    return new Plant(id, plantName, ownerId, owner, fakeDateProvider.now());
+  };
+
+  it("should get all plants", async () => {
+    const rose = createPlant("1", "Rose", "user123", "Alice");
+    const tulip = createPlant("2", "Tulip", "user456", "Bob");
+
+    await inMemoryPlantRepository.addPlant(rose);
+    await inMemoryPlantRepository.addPlant(tulip);
 
     const allPlants = await plantService.getAllPlants();
 
@@ -26,41 +41,31 @@ describe("PlantService", () => {
   });
 
   it("should throw an error if no plants are found", async () => {
-    const inMemoryPlantRepository = new InMemoryPlantRepository();
-    const plantService = new PlantService(inMemoryPlantRepository);
-
     await expect(plantService.getAllPlants()).rejects.toThrow(
       NoPlantsFoundError
     );
   });
 
   it("should get a plant by id", async () => {
-    const inMemoryPlantRepository = new InMemoryPlantRepository();
-    const plantService = new PlantService(inMemoryPlantRepository);
-    const plant = new Plant("1", "Rose", "user123", "Alice", new Date());
-    await inMemoryPlantRepository.addPlant(plant);
+    const rose = createPlant("1", "Rose", "user123", "Alice");
+    await inMemoryPlantRepository.addPlant(rose);
 
     const plantById = await plantService.getPlantById("1");
-
-    expect(plantById).toEqual(plant);
+    expect(plantById).toEqual(rose);
   });
 
   it("should add a plant", async () => {
-    const inMemoryPlantRepository = new InMemoryPlantRepository();
-    const plantService = new PlantService(inMemoryPlantRepository);
-    const plant = new Plant("1", "Rose", "user123", "Alice", new Date());
+    const rose = createPlant("1", "Rose", "user123", "Alice");
 
-    await plantService.addPlant(plant);
+    await plantService.addPlant(rose);
 
     const plantById = await plantService.getPlantById("1");
-    expect(plantById).toEqual(plant);
+    expect(plantById).toEqual(rose);
   });
-  it("should delete a plant by id", async () => {
-    const inMemoryPlantRepository = new InMemoryPlantRepository();
-    const plantService = new PlantService(inMemoryPlantRepository);
 
-    const plant = new Plant("1", "Rose", "user123", "Alice", new Date());
-    await inMemoryPlantRepository.addPlant(plant);
+  it("should delete a plant by id", async () => {
+    const rose = createPlant("1", "Rose", "user123", "Alice");
+    await inMemoryPlantRepository.addPlant(rose);
 
     await plantService.deletePlant("1");
 

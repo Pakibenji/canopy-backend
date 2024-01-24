@@ -1,9 +1,9 @@
 // adapters/plant.controller.ts
 import { Request, Response } from "express";
 import { PlantService } from "../domain/services/plantService";
-import IPlantController from "../domain/ports/plant-controller.interface";
+import { IPlantController } from "../domain/ports/plant-controller.interface";
 
-class PlantController implements IPlantController {
+export class PlantController implements IPlantController {
   constructor(private plantService: PlantService) {
     this.getAllPlants = this.getAllPlants.bind(this);
     this.getPlantById = this.getPlantById.bind(this);
@@ -34,5 +34,3 @@ class PlantController implements IPlantController {
     res.status(204).send();
   }
 }
-
-export { PlantController };

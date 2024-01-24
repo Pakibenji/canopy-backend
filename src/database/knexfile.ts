@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ export default {
     database: process.env.DB_NAME,
   },
   migrations: {
-    tableName: "knex_migrations",
-    directory: "./src/database/migrations",
-  },
+    tableName: 'knex_migrations',
+    directory: path.join(__dirname, 'migrations'),
+  }
 };
