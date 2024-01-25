@@ -3,4 +3,5 @@ export interface IPlantController {
   getPlantById(req: any, res: any): Promise<void>;
   addPlant(req: any, res: any): Promise<void>;
   deletePlant(req: any, res: any): Promise<void>;
+  updatePlant(req: any, res: any): Promise<void>;
 }

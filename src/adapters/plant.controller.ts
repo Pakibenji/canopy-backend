@@ -9,6 +9,7 @@ export class PlantController implements IPlantController {
     this.getPlantById = this.getPlantById.bind(this);
     this.addPlant = this.addPlant.bind(this);
     this.deletePlant = this.deletePlant.bind(this);
+    this.updatePlant = this.updatePlant.bind(this);
   }
 
   public async getAllPlants(req: Request, res: Response): Promise<void> {
@@ -32,5 +33,21 @@ export class PlantController implements IPlantController {
   public async deletePlant(req: Request, res: Response): Promise<void> {
     await this.plantService.deletePlant(req.params.id);
     res.status(204).send();
+  }
+
+  public async updatePlant(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+    const { plantName, owner } = req.body;
+
+    try {
+      await this.plantService.updatePlant(id, { plantName, owner });
+      res.status(200).json({ message: "Plant updated successfully" });
+    } catch (error: any) {
+      if (error.name === "NoPlantFoundError") {
+        res.status(404).json({ error: "Plant not found" });
+      } else {
+        res.status(500).json({ error: "Internal server error" });
+      }
+    }
   }
 }

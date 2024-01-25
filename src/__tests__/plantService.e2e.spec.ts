@@ -39,6 +39,33 @@ describe("E2E tests plantController", () => {
     const deleteResponse = await request(app).delete("/api/plants/4");
     expect(deleteResponse.status).toBe(204);
   });
+  it("should update a plant by id", async () => {
+    const addResponse = await request(app).post("/api/plants").send({
+      id: "1",
+      plantName: "Rose",
+      ownerId: "user123",
+      owner: "Alice",
+    });
+
+    const updatedData = {
+      plantName: "Updated Rose",
+      owner: "Alice",
+    };
+
+    const updateResponse = await request(app)
+      .put("/api/plants/1")
+      .send(updatedData);
+    expect(updateResponse.status).toBe(200);
+
+    const updatedPlant = await request(app).get("/api/plants/1");
+    expect(updatedPlant.body).toEqual({
+      id: "1",
+      plantName: "Updated Rose",
+      ownerId: "user123",
+      owner: "Alice",
+      createdAt: expect.any(String),
+    });
+  });
 
   afterAll(() => {
     server.close();
