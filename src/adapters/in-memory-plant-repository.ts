@@ -22,4 +22,11 @@ export class InMemoryPlantRepository implements IPlantRepository {
       this.plants.splice(plantIndex, 1);
     }
   }
+
+  async updatePlant(id: string, updatedPlant: Plant): Promise<void> {
+    const index = this.plants.findIndex((plant) => plant.id === id);
+    if (index !== -1) {
+      this.plants[index] = updatedPlant;
+    }
+  }
 }

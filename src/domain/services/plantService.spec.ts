@@ -73,4 +73,29 @@ describe("PlantService", () => {
       NoPlantFoundError
     );
   });
+  it("should update a plant", async () => {
+    const initialPlant = new Plant(
+      "1",
+      "Rose",
+      "user123",
+      "Alice",
+      fakeDateProvider.now()
+    );
+
+    await plantService.addPlant(initialPlant);
+
+    const updatedPlantData = {
+      plantName: "Updated Rose",
+      owner: "Updated Alice",
+    };
+
+    await plantService.updatePlant("1", updatedPlantData);
+
+    const updatedPlant = await plantService.getPlantById("1");
+
+    expect(updatedPlant).toEqual({
+      ...initialPlant,
+      ...updatedPlantData,
+    });
+  });
 });

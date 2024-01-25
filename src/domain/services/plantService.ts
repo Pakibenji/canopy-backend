@@ -47,6 +47,20 @@ export class PlantService {
     }
   }
 
+  async updatePlant(id: string, updatedData: Partial<Plant>): Promise<void> {
+    try {
+      const plant = await this.plantRepository.getPlantById(id);
+      if (!plant) {
+        throw new NoPlantFoundError();
+      }
+
+      const updatedPlant = { ...plant, ...updatedData };
+      await this.plantRepository.updatePlant(id, updatedPlant);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deletePlant(id: string): Promise<void> {
     try {
       const plant = await this.plantRepository.getPlantById(id);
