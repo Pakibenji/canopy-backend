@@ -1,7 +1,7 @@
 // plantService.ts
-import { IPlantRepository } from "../ports/plant-repository.interface";
-import { Plant } from "../entities/plant.entity";
-import { IDateProvider } from "../ports/date-provider.interface";
+import { IPlantRepository } from "../../ports/plant/plant-repository.interface";
+import { Plant } from "../../entities/plant/plant.entity";
+import { IDateProvider } from "../../ports/date-provider.interface";
 
 export class PlantService {
   constructor(

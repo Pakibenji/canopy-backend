@@ -2,6 +2,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("plants", function (table) {
     table.increments("id").primary();
     table.string("plantName");
+    table.string("plantImage");
     table.string("ownerId");
     table.string("owner");
     table.timestamp("createdAt").defaultTo(knex.fn.now());

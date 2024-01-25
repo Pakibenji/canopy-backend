@@ -1,11 +1,11 @@
-import { InMemoryPlantRepository } from "../../adapters/in-memory-plant-repository";
+import { InMemoryPlantRepository } from "../../../adapters/plant/in-memory-plant-repository";
 import {
   PlantService,
   NoPlantsFoundError,
   NoPlantFoundError,
 } from "./plantService";
-import { Plant } from "../entities/plant.entity";
-import { FakeDateProvider } from "../../adapters/fake-date-provider";
+import { Plant } from "../../entities/plant/plant.entity";
+import { FakeDateProvider } from "../../../adapters/fake-date-provider";
 
 describe("PlantService", () => {
   let inMemoryPlantRepository: InMemoryPlantRepository;

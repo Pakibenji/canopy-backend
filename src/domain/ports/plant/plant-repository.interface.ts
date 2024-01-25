@@ -1,4 +1,4 @@
-import { Plant } from "../entities/plant.entity";
+import { Plant } from "../../entities/plant/plant.entity";
 
 export interface IPlantRepository {
   updatePlant(id: string, updatedPlant: Plant): Promise<void>;

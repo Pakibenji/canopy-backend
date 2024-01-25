@@ -1,8 +1,8 @@
 // routes/plantRoutes.ts
 import express, { Router } from "express";
-import { InMemoryPlantRepository } from "../adapters/in-memory-plant-repository";
-import { PlantController } from "../adapters/plant.controller";
-import { PlantService } from "../domain/services/plantService";
+import { InMemoryPlantRepository } from "../adapters/plant/in-memory-plant-repository";
+import { PlantController } from "../adapters/plant/plant.controller";
+import { PlantService } from "../domain/services/plant/plantService";
 import { RealDateProvider } from "../adapters/real-date-provider";
 
 export const plantRouter: Router = express.Router();

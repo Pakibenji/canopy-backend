@@ -1,7 +1,7 @@
 // adapters/plant.controller.ts
 import { Request, Response } from "express";
-import { PlantService } from "../domain/services/plantService";
-import { IPlantController } from "../domain/ports/plant-controller.interface";
+import { PlantService } from "../../domain/services/plant/plantService";
+import { IPlantController } from "../../domain/ports/plant/plant-controller.interface";
 
 export class PlantController implements IPlantController {
   constructor(private plantService: PlantService) {
