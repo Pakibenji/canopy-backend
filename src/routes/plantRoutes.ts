@@ -15,3 +15,4 @@ plantRouter.get("/plants", plantController.getAllPlants);
 plantRouter.get("/plants/:id", plantController.getPlantById);
 plantRouter.post("/plants", plantController.addPlant);
 plantRouter.delete("/plants/:id", plantController.deletePlant);
+

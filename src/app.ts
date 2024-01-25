@@ -1,4 +1,7 @@
 import express from "express";
+import cors from "cors";
+import { corsOptions } from "./cors-config";
+
 import { InMemoryPlantRepository } from "./adapters/in-memory-plant-repository";
 import { PlantController } from "./adapters/plant.controller";
 import { PlantService } from "./domain/services/plantService";
@@ -14,6 +17,7 @@ const plantService = new PlantService(plantRepository, realDateProvider);
 const plantController = new PlantController(plantService);
 
 app.use(express.json());
+app.use(cors(corsOptions));
 app.use("/api", plantRouter);
 
 const server = app.listen(port, () => {
