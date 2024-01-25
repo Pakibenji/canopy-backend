@@ -21,15 +21,35 @@ describe("PlantService", () => {
   const createPlant = (
     id: string,
     plantName: string,
+    plantImage: string,
     ownerId: string,
     owner: string
   ): Plant => {
-    return new Plant(id, plantName, ownerId, owner, fakeDateProvider.now());
+    return new Plant(
+      id,
+      plantName,
+      plantImage,
+      ownerId,
+      owner,
+      fakeDateProvider.now()
+    );
   };
 
   it("should get all plants", async () => {
-    const rose = createPlant("1", "Rose", "user123", "Alice");
-    const tulip = createPlant("2", "Tulip", "user456", "Bob");
+    const rose = createPlant(
+      "1",
+      "Rose",
+      "https://picsum.photos/seed/picsum/200/300",
+      "user123",
+      "Alice"
+    );
+    const tulip = createPlant(
+      "2",
+      "Tulip",
+      "https://picsum.photos/seed/picsum/200/300",
+      "user456",
+      "Bob"
+    );
 
     await inMemoryPlantRepository.addPlant(rose);
     await inMemoryPlantRepository.addPlant(tulip);
@@ -47,7 +67,13 @@ describe("PlantService", () => {
   });
 
   it("should get a plant by id", async () => {
-    const rose = createPlant("1", "Rose", "user123", "Alice");
+    const rose = createPlant(
+      "1",
+      "Rose",
+      "https://picsum.photos/seed/picsum/200/300",
+      "user123",
+      "Alice"
+    );
     await inMemoryPlantRepository.addPlant(rose);
 
     const plantById = await plantService.getPlantById("1");
@@ -55,7 +81,13 @@ describe("PlantService", () => {
   });
 
   it("should add a plant", async () => {
-    const rose = createPlant("1", "Rose", "user123", "Alice");
+    const rose = createPlant(
+      "1",
+      "Rose",
+      "https://picsum.photos/seed/picsum/200/300",
+      "user123",
+      "Alice"
+    );
 
     await plantService.addPlant(rose);
 
@@ -64,7 +96,13 @@ describe("PlantService", () => {
   });
 
   it("should delete a plant by id", async () => {
-    const rose = createPlant("1", "Rose", "user123", "Alice");
+    const rose = createPlant(
+      "1",
+      "Rose",
+      "https://picsum.photos/seed/picsum/200/300",
+      "user123",
+      "Alice"
+    );
     await inMemoryPlantRepository.addPlant(rose);
 
     await plantService.deletePlant("1");
@@ -77,6 +115,7 @@ describe("PlantService", () => {
     const initialPlant = new Plant(
       "1",
       "Rose",
+      "https://picsum.photos/seed/picsum/200/300",
       "user123",
       "Alice",
       fakeDateProvider.now()

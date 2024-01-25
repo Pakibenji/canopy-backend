@@ -6,6 +6,7 @@ describe("E2E tests plantController", () => {
     const response = await request(app).post("/api/plants").send({
       id: "1",
       plantName: "Rose",
+      plantImage: "https://picsum.photos/seed/picsum/200/300",
       ownerId: "user123",
       owner: "Alice",
     });
@@ -32,6 +33,7 @@ describe("E2E tests plantController", () => {
     const addResponse = await request(app).post("/api/plants").send({
       id: "4",
       plantName: "Lily",
+      plantImage: "https://picsum.photos/seed/picsum/200/300",
       ownerId: "user789",
       owner: "Eve",
     });
@@ -43,6 +45,7 @@ describe("E2E tests plantController", () => {
     const addResponse = await request(app).post("/api/plants").send({
       id: "1",
       plantName: "Rose",
+      plantImage: "https://picsum.photos/seed/picsum/200/300",
       ownerId: "user123",
       owner: "Alice",
     });
@@ -61,6 +64,7 @@ describe("E2E tests plantController", () => {
     expect(updatedPlant.body).toEqual({
       id: "1",
       plantName: "Updated Rose",
+      plantImage: "https://picsum.photos/seed/picsum/200/300",
       ownerId: "user123",
       owner: "Alice",
       createdAt: expect.any(String),
