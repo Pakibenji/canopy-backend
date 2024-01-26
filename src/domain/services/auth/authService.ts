@@ -26,6 +26,12 @@ export class AuthService {
       this.dateProvider.now()
     );
 
+    const userWithEmail = await this.getUserByEmail(userData.email);
+
+    if (userWithEmail) {
+      throw new Error("Email already exists");
+    }
+
     const registeredUser = await this.userRepository.save(newUser);
     return registeredUser;
   }

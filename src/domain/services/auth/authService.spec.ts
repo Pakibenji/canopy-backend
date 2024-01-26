@@ -43,6 +43,19 @@ describe("AuthService", () => {
     const retrievedUser = await userRepository.getUserById(registeredUser.id);
     expect(retrievedUser).toEqual(registeredUser);
   });
+  it("should throw an error when registering a user with an existing email", async () => {
+    const userData = {
+      username: "john_doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    };
+
+    await authService.register(userData);
+
+    await expect(authService.register(userData)).rejects.toThrow(
+      "Email already exists"
+    );
+  });
   it("should retrieve a user by email", async () => {
     const userData = {
       username: "john_doe",
@@ -81,6 +94,26 @@ describe("AuthService", () => {
     expect(token).toBeDefined();
     expect(typeof token).toBe("string");
   });
+  it("should throw an error when logging in with invalid credentials", async () => {
+    const userData = {
+      username: "john_doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    };
+
+    await authService.register(userData);
+
+    await expect(
+      authService.login({ email: userData.email, password: "wrongPassword" })
+    ).rejects.toThrow("Invalid password");
+
+    await expect(
+      authService.login({
+        email: "nonexistent@user.com",
+        password: "securePassword",
+      })
+    ).rejects.toThrow("User not found");
+  });
   it("should log out a user and invalidate the token", async () => {
     const userData = {
       username: "john_doe",
@@ -116,5 +149,18 @@ describe("AuthService", () => {
     const retrievedUser = await authService.getUserById(registeredUser.id);
 
     expect(retrievedUser).toBeUndefined();
+  });
+  it("should throw an error when deleting a user with incorrect password", async () => {
+    const userData = {
+      username: "john_doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    };
+
+    const registeredUser = await authService.register(userData);
+
+    await expect(
+      authService.deleteUserByIdWithPassword(registeredUser.id, "wrongPassword")
+    ).rejects.toThrow("Invalid password");
   });
 });
