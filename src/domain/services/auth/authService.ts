@@ -33,4 +33,25 @@ export class AuthService {
   async getUserByEmail(email: string): Promise<User | undefined> {
     return await this.userRepository.getUserByEmail(email);
   }
+
+  async login({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<{ user: User; token: string }> {
+    const user = await this.getUserByEmail(email);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const passwordMatches = await argon2.verify(user.password, password);
+    if (!passwordMatches) {
+      throw new Error("Invalid password");
+    }
+
+    const token = "generatedToken";
+    return { user, token };
+  }
 }

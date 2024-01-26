@@ -56,4 +56,48 @@ describe("AuthService", () => {
 
     expect(retrievedUser).toEqual(registeredUser);
   });
+  it("should log in a user with valid credentials", async () => {
+    const userData = {
+      username: "john_doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    };
+
+    await authService.register(userData);
+
+    const loggedInUser = await authService.login({
+      email: userData.email,
+      password: userData.password,
+    });
+    const { user, token } = await loggedInUser;
+
+    expect(user).toBeDefined();
+    expect(user.id).toBeDefined();
+    expect(user.username).toBe(userData.username);
+    expect(user.email).toBe(userData.email);
+    expect(user.avatar).toBe("defaultAvatarUrl");
+    expect(user.password).toBeDefined();
+    expect(user.createdAt).toEqual(dateProvider.now());
+    expect(token).toBeDefined();
+    expect(typeof token).toBe("string");
+  });
+  it("should log out a user and invalidate the token", async () => {
+    const userData = {
+      username: "john_doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    };
+
+    await authService.register(userData);
+
+    const loggedInUser = await authService.login({
+      email: userData.email,
+      password: userData.password,
+    });
+    const { token } = await loggedInUser;
+
+    const logoutResult = await authService.logout(token);
+
+    expect(logoutResult).toBe(true);
+  });
 });
