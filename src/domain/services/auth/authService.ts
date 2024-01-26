@@ -34,6 +34,10 @@ export class AuthService {
     return await this.userRepository.getUserByEmail(email);
   }
 
+  async getUserById(id: string): Promise<User | undefined> {
+    return await this.userRepository.getUserById(id);
+  }
+
   async login({
     email,
     password,
@@ -53,5 +57,26 @@ export class AuthService {
 
     const token = "generatedToken";
     return { user, token };
+  }
+
+  async logout(token: string): Promise<boolean> {
+    return true;
+  }
+
+  async deleteUserByIdWithPassword(
+    userId: string,
+    password: string
+  ): Promise<void> {
+    const user = await this.getUserById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const passwordMatches = await argon2.verify(user.password, password);
+    if (!passwordMatches) {
+      throw new Error("Invalid password");
+    }
+
+    await this.userRepository.deleteUserById(userId);
   }
 }

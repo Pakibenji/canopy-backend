@@ -16,4 +16,13 @@ export class InMemoryUserRepository implements IUserRepository {
   async getUserById(id: string): Promise<User | undefined> {
     return this.users.find((user) => user.id === id);
   }
+
+  async deleteUserById(userId: string): Promise<boolean> {
+    const userIndex = this.users.findIndex((user) => user.id === userId);
+    if (userIndex === -1) {
+      return false;
+    }
+    this.users.splice(userIndex, 1);
+    return true;
+  }
 }

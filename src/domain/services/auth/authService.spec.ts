@@ -100,4 +100,21 @@ describe("AuthService", () => {
 
     expect(logoutResult).toBe(true);
   });
+  it("should delete a user by id with correct password", async () => {
+    const userData = {
+      username: "john_doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    };
+
+    const registeredUser = await authService.register(userData);
+    await authService.deleteUserByIdWithPassword(
+      registeredUser.id,
+      userData.password
+    );
+
+    const retrievedUser = await authService.getUserById(registeredUser.id);
+
+    expect(retrievedUser).toBeUndefined();
+  });
 });
